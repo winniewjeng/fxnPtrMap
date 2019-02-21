@@ -4,6 +4,8 @@
 #include <map>
 using namespace std;
 
+//turing everything into pointer dereference to optimize speed
+
 typedef void(*fptr)(); // fptr is a void function pointer
 
 void up();
@@ -14,13 +16,11 @@ void nothing();
 void quitProgram();
 fptr mapFunc(string input);
 
-//turing everything into pointer dereference to make the program run faster
-
 int main(int argc, const char * argv[]) {
     
-    map<string, fptr> aMap; // create a map of key: input, value: void function
+    map<string, fptr> aMap; //create a map of key: input, value: void function
     string input;
-    
+    cout << "Strat: ";
     while (true) {
         cin >> input;
         mapFunc(input)();
@@ -40,19 +40,22 @@ void left() {
 void right(){
     cout << "Right!" << endl;
 }
-//exit the part of cstdlib to end the program
-void quitProgram() {
-    exit(0);
-}
 void nothing(){
     //Do nothing, just an empty fxn
 }
 
-// take an array of void functions, return a map with string as key and fucntion as values
+void quitProgram() {
+    // exit the part of cstdlib to end the program
+    exit(0);
+}
+
+// take an array of void fxns, return a map with string as key and fucntion as values
 fptr mapFunc(string input) {
-    //initialize a map
+    // initialize a map
     map<string, fptr> myMap;
+    // any un-mapped input gets assigned the nothing function
     myMap[input] = nothing;
+    // if the input is mapped as key, another function is assigned based on key
     myMap["U"] = myMap["u"] = up;
     myMap["D"] = myMap["d"] = down;
     myMap["L"] = myMap["l"] = left;
@@ -60,5 +63,4 @@ fptr mapFunc(string input) {
     myMap["Q"] = myMap["q"] = quitProgram;
     
     return myMap.find(input)->second;
-    
 }
